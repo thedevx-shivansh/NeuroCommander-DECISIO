@@ -1,3 +1,5 @@
+WebApp Link : https://neurocommander-decisio.onrender.com/
+
 ⚡ NeuroCommander D.E.C.I.S.I.O. — Executive Decision Engine 
 
 “When your brain freezes… this system doesn’t.”
@@ -117,7 +119,7 @@ It’s meant to make you move.
 
 You don’t install anything.
 
-👉 Just go to the website- 
+👉 Just go to the website- https://neurocommander-decisio.onrender.com/
 👉 Log in (Email or Google).
 👉 Type your dilemma (20–3000 chars).
 👉 Hit “Analyze.”
