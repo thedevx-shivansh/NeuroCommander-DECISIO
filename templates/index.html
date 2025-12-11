@@ -1461,7 +1461,13 @@
             (data.risk_management.mitigation_strategies || []).forEach(strategy => {
                 const li = document.createElement('li');
                 li.className = 'action-item';
-                li.innerHTML = `<strong>${strategy.risk}:</strong> ${strategy.strategy}`;
+                
+                // ROBUST HANDLING: Check if AI returned a string or object
+                if (typeof strategy === 'string') {
+                     li.innerHTML = `<strong>Risk:</strong> ${strategy}`;
+                } else {
+                     li.innerHTML = `<strong>${strategy.risk || 'Risk'}:</strong> ${strategy.strategy || 'Strategy'}`;
+                }
                 mitigationList.appendChild(li);
             });
 
@@ -1470,9 +1476,55 @@
             (data.action_plan.immediate_today || []).forEach(action => {
                 const li = document.createElement('li');
                 li.className = 'action-item';
-                li.textContent = `${action.action} (${action.duration || 'Est. time'})`;
+                
+                // ROBUST HANDLING: Check if AI returned a string or object
+                if (typeof action === 'string') {
+                    li.textContent = action;
+                } else {
+                    li.textContent = `${action.action || 'Action'} (${action.duration || 'Est. time'})`;
+                }
                 actionToday.appendChild(li);
             });
+            // ... (After the actionToday block) ...
+
+            // 1. POPULATE THIS WEEK
+            const actionWeek = document.getElementById('actionWeek');
+            actionWeek.innerHTML = '';
+            const weekActions = data.action_plan.this_week || [];
+            weekActions.forEach(action => {
+                const li = document.createElement('li');
+                li.className = 'action-item';
+                // Handle both simple strings and objects
+                if (typeof action === 'string') {
+                    li.textContent = action;
+                } else {
+                    li.textContent = `${action.action || 'Task'} (${action.deadline || 'By Friday'})`;
+                }
+                actionWeek.appendChild(li);
+            });
+
+            // 2. POPULATE NEXT MONTH
+            const monthData = data.action_plan.one_month;
+            const monthDiv = document.getElementById('actionMonth');
+            if (typeof monthData === 'string') {
+                monthDiv.textContent = monthData;
+            } else if (monthData) {
+                // If it's an object, try to show the focus or description
+                monthDiv.textContent = monthData.focus || monthData.description || JSON.stringify(monthData);
+            } else {
+                monthDiv.textContent = "Focus on consistency and routine stabilization.";
+            }
+
+            // 3. POPULATE LONG TERM
+            const termData = data.action_plan.long_term;
+            const termDiv = document.getElementById('actionLongTerm');
+            if (typeof termData === 'string') {
+                termDiv.textContent = termData;
+            } else if (termData) {
+                termDiv.textContent = termData.vision || termData.milestone || JSON.stringify(termData);
+            } else {
+                termDiv.textContent = "Build a sustainable, high-performance lifestyle.";
+            }
 
             document.getElementById('affirmation').textContent = data.affirmation.capability_message;
 
