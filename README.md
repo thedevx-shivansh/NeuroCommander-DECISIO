@@ -149,7 +149,7 @@ One screen → full executive clarity.
 If you still want to run it locally:
 
 1️⃣ Clone the repo
-git clone 
+git clone https://github.com/thedevx-shivansh/NeuroCommander-DECISIO.git
 cd neurocommander
 
 2️⃣ Install dependencies
