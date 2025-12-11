@@ -810,10 +810,30 @@
             margin-top: 5px;
         }
 
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 768px) {
+        /* ========== UNIVERSAL MOBILE OPTIMIZATION ========== */
+        /* Fixes JioSphere, Chrome Mobile, Safari, and Tablets */
+        @media (max-width: 900px) {
+            /* 1. FORCE DARK BACKGROUND */
+            /* Prevents invisible text if gradient fails to load */
+            body {
+                background: #050812 !important; 
+            }
+            
+            /* 2. KILL THE STARS */
+            /* Critical: Disables heavy animation that freezes mobile browsers */
+            .stars-background {
+                display: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+            }
+
+            /* 3. LAYOUT ADJUSTMENTS */
+            header {
+                padding: 15px;
+            }
+
             header h1 {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
             }
 
             .header-right {
@@ -821,50 +841,61 @@
             }
 
             .auth-card {
-                padding: 30px 20px;
+                padding: 25px 15px;
+                width: 95%;
+                margin-top: 20px;
             }
 
             main {
-                padding: 30px 15px;
+                padding: 20px 10px;
+                align-items: flex-start; /* Fixes centering cut-off */
+            }
+
+            .input-section {
+                width: 100%;
+            }
+
+            /* 4. TEXT INPUT USABILITY */
+            textarea {
+                font-size: 16px !important; /* Prevents iPhone zoom */
+                min-height: 180px;
+                padding: 15px;
             }
 
             .button-group {
                 flex-direction: column;
+                gap: 15px;
             }
 
             button {
-                padding: 15px 30px;
+                padding: 16px;
+                width: 100%;
+                font-size: 1rem;
             }
 
+            /* 5. RESULTS CARD SAFETY */
             .results-card {
-                padding: 20px;
+                padding: 15px;
+                margin-bottom: 20px;
+                border: 1px solid var(--primary-neon); /* Higher visibility border */
             }
 
-            .results-card h3 {
-                font-size: 1.1rem;
-            }
-
-            .emotion-badges {
-                gap: 8px;
-            }
-
-            .badge {
-                padding: 6px 12px;
-                font-size: 0.8rem;
-            }
-
-            .decision-highlight {
+            /* 6. PREVENT TEXT OVERFLOW */
+            .results-content, .action-item, p, li {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
                 font-size: 0.95rem;
-                padding: 20px;
             }
-
+            
+            /* 7. FOOTER FIX */
             footer {
-                padding: 20px 15px;
+                padding: 30px 15px;
             }
-
+            
             .footer-links {
                 flex-direction: column;
-                gap: 10px;
+                gap: 15px;
             }
         }
 
@@ -1535,9 +1566,21 @@
 
             document.getElementById('resultsSection').classList.add('active');
             
+            // AGGRESSIVE SCROLL FIX FOR MOBILE/JIOSPHERE
             setTimeout(() => {
-                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 500);
+                const results = document.getElementById('resultsSection');
+                
+                // Method 1: Standard Smooth Scroll
+                results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Method 2: Fallback for older browsers (JioSphere)
+                // If smooth scroll fails, this forces a jump after a slight delay
+                setTimeout(() => {
+                    const y = results.getBoundingClientRect().top + window.pageYOffset - 80;
+                    window.scrollTo({top: y, behavior: 'auto'});
+                }, 300);
+                
+            }, 100); // Small delay to allow DOM to render
         }
 
         // ========== UTILITY FUNCTIONS ==========
